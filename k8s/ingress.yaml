@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: login-app-ingress
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    networking.gke.io/v1beta1.FrontendConfig: "login-app-frontendconfig"
+    kubernetes.io/ingress.global-static-ip-name: "login-app-static-ip"
+spec:
+  rules:
+    - host: login.example.com  # Point DNS here
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: login-app-service
+                port:
+                  number: 80
