@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: login-app-service
+  namespace: default
+  labels:
+    app: login-app
+  annotations:
+    cloud.google.com/backend-config: '{"ports": {"3000":"login-app-backendconfig"}}'
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+  selector:
+    app: login-app
+  type: NodePort
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000
+      protocol: TCP
