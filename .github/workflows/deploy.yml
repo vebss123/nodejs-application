@@ -2,7 +2,7 @@ name: Deploy Login App to GKE
 
 on:
   push:
-    branches: 
+    branches: vaibhav
 
 env:
   PROJECT_ID: your-gcp-project-id
