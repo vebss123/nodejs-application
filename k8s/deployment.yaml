@@ -6,7 +6,7 @@ metadata:
   labels:
     app: login-app
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: login-app
@@ -21,4 +21,3 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
-      
