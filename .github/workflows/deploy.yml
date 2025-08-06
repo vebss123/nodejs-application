@@ -1,15 +1,16 @@
 name: Deploy Login App to GKE
 
 on:
-  push: 
-    branches: vaibhav
+  push:
+    branches: [main]
+  workflow_dispatch:
 
 env:
   PROJECT_ID: your-gcp-project-id
-  GKE_CLUSTER: your-cluster
+  GKE_CLUSTER: your-gke-cluster
   GKE_REGION: asia-south1
   GAR_ZONE: asia-south1
-  GAR_REPO: your-repo
+  GAR_REPO: login-app-repo
   IMAGE_NAME: login-app
   IMAGE_TAG: latest
   NAMESPACE: default
@@ -17,12 +18,11 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Authenticate to GCP
+    - name: Authenticate with Google Cloud
       uses: google-github-actions/auth@v1
       with:
         credentials_json: ${{ secrets.GCP_SA_KEY }}
@@ -49,3 +49,7 @@ jobs:
         kubectl apply -f k8s/deployment.yaml
         kubectl apply -f k8s/service.yaml
         kubectl apply -f k8s/ingress.yaml
+        kubectl apply -f k8s/backendconfig.yaml
+        kubectl apply -f k8s/frontendconfig.yaml
+        kubectl apply -f k8s/hpa.yaml
+        kubectl rollout status deployment/login-app --timeout=600s
